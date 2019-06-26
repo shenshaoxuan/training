@@ -1,0 +1,62 @@
+{% extends 'common/base.html' %}
+
+{% block title %}热度详情{% endblock %}
+
+{% block page_content %}
+
+
+    <form>
+        <fieldset disabled>
+
+            <div class="form-group">
+                <label for="disabledTextInput">得票数</label>
+                <input type="text" id="disabledTextInput" class="form-control" placeholder={{ result['quantity'] }}>
+            </div>
+            <div class="form-group">
+                <label for="disabledTextInput">讲课人</label>
+                <input type="text" id="disabledTextInput" class="form-control" placeholder={{ result['teacher'] }}>
+            </div>
+
+            <div class="form-group">
+                <label for="disabledTextInput">课程类型</label>
+
+                {% if result['category']==1 %}
+                    {% set category='语言技巧' %}
+                {% elif result['category']==2 %}
+                    {% set category='框架' %}
+                {% elif result['category']==3 %}
+                    {% set category='数据库' %}
+                {% elif result['category']==4 %}
+                    {% set category='新技术' %}
+                {% endif %}
+
+
+                <input type="text" id="disabledTextInput" class="form-control" placeholder={{ category }}>
+            </div>
+
+            <div class="form-group">
+                <label for="disabledTextInput">课程名称</label>
+                <input type="text" id="disabledTextInput" class="form-control" placeholder={{ result['course_name'] }}>
+            </div>
+
+            <div class="form-group">
+                <label for="disabledTextInput">详情</label>
+                <textarea id="disabledTextInput" class="form-control" placeholder={{ result['remark']|replace('\r\n', '|') }}></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="disabledTextInput">创建时间</label>
+                <input type="text" id="disabledTextInput" class="form-control" placeholder={{ result['create_time'] }}>
+            </div>
+
+        <div class="form-group">
+                <label for="disabledTextInput">想听的人</label>
+                <input type="text" id="disabledTextInput" class="form-control" placeholder={{ result['student'] }}>
+            </div>
+
+
+
+        </fieldset>
+    </form>
+{% endblock %}
+

@@ -1,0 +1,42 @@
+image: docker:latest             # 指定runner的基础镜像
+
+stages:                             # 表示当前管道可能有三个阶段
+  - build
+  - push
+  - deploy
+
+variables:                        # 设置变量
+  APP_NAME: hs_right_api
+  APP_IMAGE: "${HUANSI_REGISTRY_URL}/huansi/${APP_NAME}"
+
+before_script:                    # 在每个阶段执行要操作的命令
+  - docker login ${HUANSI_REGISTRY_URL} -u ${HUANSI_USER} -p ${HUANSI_PASSWORD}
+
+build:
+  stage: build                    # 指定当前job为build阶段
+  tags:
+    - dev                        # 指定当前job只能用tag为dev的runner运行
+  script:
+    - docker build -t ${APP_IMAGE}:${CI_COMMIT_REF_NAME} .                # 要执行的操作
+
+push:
+  stage: push                    # 指定当前job为push阶段
+  tags:
+    - dev                        # 指定当前job只能用tag为dev的runner运行
+  script:
+    - echo "success"            # 要执行的操作
+  except:
+    - dev                        # 排除分支，除了dev分支，其他分支都会执行这个job
+
+deploy:
+  stage: deploy                    # 指定当前job为deploy阶段
+  retry: 2                        # 在发生错误的情况下，自动重启job的次数
+  tags:
+    - dev                        # 指定当前job只能用tag为dev的runner运行
+  variables:                    # 变量
+    APP_CNAME: "${APP_NAME}-${CI_COMMIT_REF_NAME}"
+    APP_PORT: 8095
+  script:
+    - echo "delete none tag images success"            # 要执行的操作
+  only:
+    - dev                        # 指定分支，只用dev分支才能触发当前的job

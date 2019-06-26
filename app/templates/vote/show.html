@@ -1,0 +1,76 @@
+{% extends 'common/base.html' %}
+
+{% block title %}投票{% endblock %}
+
+{% block page_content %}
+
+        <a href="{{ url_for('vote.get_all_course', teach_or_listen=1) }}" class="btn btn-primary btn-lg active" role="button">有人想讲的课</a>
+        <a href="{{ url_for('vote.get_all_course', teach_or_listen=2) }}" class="btn btn-primary btn-lg active" role="button">有人想听的课</a>
+
+
+       <table class="table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>课程类型</th>
+            {% if teach_or_listen==1 %}
+                <th>讲课人</th>
+            {% endif %}
+          <th>课程名称</th>
+          <th>详情</th>
+          <th>创建时间</th>
+          <th>详细</th>
+          <th>投票</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for course in courses %}
+            {% if course.category==1 %}
+                {% set category='语言技巧' %}
+            {% elif course.category==2 %}
+                {% set category='框架' %}
+            {% elif course.category==3 %}
+                {% set category='数据库' %}
+            {% elif course.category==4 %}
+                {% set category='新技术' %}
+            {% endif %}
+        <tr>
+          <th scope="row">{{ loop.index }}</th>
+          <td>{{ category }}</td>
+         {% if teach_or_listen==1 %}
+          <td>{{ course.user.username }}</td>
+        {% endif %}
+          <td>{{ course.course_name }}</td>
+          <td>{{ course.remark|truncate(length=20,killwords=False) }}</td>
+          <td>{{ course.create_time }}</td>
+          <td><a href="{{ url_for('course.get_one', id=course.id)  }}">详细</a></td>
+          <td>
+            <button type="button" class="btn btn-default btn-lg active vote" url="{{ url_for('vote.vote_course', course_id=course.id) }}" style="font-size:10px;padding:5px 12px;line-height: 1">{% if current_user.is_vote(course.id) %}<span class="glyphicon glyphicon-heart" aria-hidden="true" style="color:red"></span>{% else %}投票{% endif %}</button>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+
+    </table>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script type="text/javascript">
+        $(function () {
+            $('.vote').click(function () {
+                _this = this;
+                $.get($(this).attr('url'), function () {
+                    console.log($(_this).text())
+                    if ($(_this).text() == '投票') {
+                        _this.innerHTML='<span class="glyphicon glyphicon-heart" aria-hidden="true" style="color:red"></span>'
+                    } else {
+                        $(_this).text('投票')
+                    }
+
+            })
+        })
+    })
+    </script>
+{% endblock %}

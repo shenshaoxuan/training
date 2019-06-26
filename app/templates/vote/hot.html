@@ -1,0 +1,57 @@
+{% extends 'common/base.html' %}
+
+{% block title %}热度排名{% endblock %}
+
+{% block page_content %}
+
+    {#        <a href="{{ url_for('vote.get_all_course', teach_or_listen=1) }}" class="btn btn-primary btn-lg active" role="button">有人想讲的课</a>#}
+    {#        <a href="{{ url_for('vote.get_all_course', teach_or_listen=2) }}" class="btn btn-primary btn-lg active" role="button">有人想听的课</a>#}
+
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th></th>
+            <th>得票数</th>
+            <th>讲课人</th>
+            <th>课程类型</th>
+            <th>课程名称</th>
+            <th>详情</th>
+            <th>创建时间</th>
+            <th>想听的人</th>
+            <th>详细</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for result in results %}
+            {% if result['category']==1 %}
+                {% set category='语言技巧' %}
+            {% elif result['category']==2 %}
+                {% set category='框架' %}
+            {% elif result['category']==3 %}
+                {% set category='数据库' %}
+            {% elif result['category']==4 %}
+                {% set category='新技术' %}
+            {% endif %}
+            <tr>
+                <th scope="row">{{ loop.index }}</th>
+                <td>{{ result['quantity'] }}</td>
+
+                <td>{{ result['teacher'] }}</td>
+
+                <td>{{ category }}</td>
+
+                <td>{{ result['course_name'] }}</td>
+                <td>{{ result['remark']|truncate(length=20,killwords=False) }}</td>
+                <td>{{ result['create_time'] }}</td>
+                <td>{{ result['student'] }}</td>
+
+                <td><a href="{{ url_for('vote.get_one', id=result['id']) }}">详细</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+
+{% endblock %}
+

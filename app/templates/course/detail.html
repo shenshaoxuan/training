@@ -1,0 +1,53 @@
+{% extends 'common/base.html' %}
+
+{% block title %}课程{% endblock %}
+
+{% block page_content %}
+
+
+    <form>
+        <fieldset disabled>
+            <div class="form-group">
+                <label for="disabledTextInput">课程类型</label>
+
+                {% if course.category==1 %}
+                    {% set category='语言技巧' %}
+                {% elif course.category==2 %}
+                    {% set category='框架' %}
+                {% elif course.category==3 %}
+                    {% set category='数据库' %}
+                {% elif course.category==4 %}
+                    {% set category='新技术' %}
+                {% endif %}
+                {% if course.teach_or_listen==1 %}
+                    {% set teach_or_listen='讲课' %}
+                {% elif course.teach_or_listen==2 %}
+                    {% set teach_or_listen='听课' %}
+                {% endif %}
+
+                <input type="text" id="disabledTextInput" class="form-control" placeholder={{ category }}>
+            </div>
+
+            <div class="form-group">
+                <label for="disabledTextInput">讲课或听课</label>
+                <input type="text" id="disabledTextInput" class="form-control" placeholder={{ teach_or_listen }}>
+            </div>
+
+            <div class="form-group">
+                <label for="disabledTextInput">课程名字</label>
+                <input type="text" id="disabledTextInput" class="form-control" placeholder={{ course.course_name }}>
+            </div>
+
+            <div class="form-group">
+                <label for="disabledTextInput">创建时间</label>
+                <input type="text" id="disabledTextInput" class="form-control" placeholder={{ course.create_time }}>
+            </div>
+
+            <div class="form-group">
+                <label for="disabledTextInput">详细</label>
+                <textarea id="disabledTextInput" class="form-control" placeholder={{ course.remark|replace('\r\n', '|') }}></textarea>
+            </div>
+        </fieldset>
+    </form>
+{% endblock %}
+

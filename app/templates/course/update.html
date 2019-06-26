@@ -1,0 +1,100 @@
+{% extends 'common/base.html' %}
+
+{% block title %}课程{% endblock %}
+
+{% block page_content %}
+
+
+    {#    <form>#}
+    {#        <fieldset disabled>#}
+    {#            <div class="form-group">#}
+    {#                <label for="disabledTextInput">课程类型</label>#}
+    {#                <input type="text" id="disabledTextInput" class="form-control" placeholder={{ course.catecory }}>#}
+    {#            </div>#}
+    {##}
+    {#            <div class="form-group">#}
+    {#                <label for="disabledTextInput">讲课或听课</label>#}
+    {#                <input type="text" id="disabledTextInput" class="form-control" placeholder={{ course.teach_or_listen }}>#}
+    {#            </div>#}
+    {##}
+    {#            <div class="form-group">#}
+    {#                <label for="disabledTextInput">课程名字</label>#}
+    {#                <input type="text" id="disabledTextInput" class="form-control" placeholder={{ course.course_name }}>#}
+    {#            </div>#}
+    {##}
+    {#            <div class="form-group">#}
+    {#                <label for="disabledTextInput">详细</label>#}
+    {#                <textarea id="disabledTextInput" class="form-control" placeholder={{ course.remark }}></textarea>#}
+    {#            </div>#}
+    {#        </fieldset>#}
+    {#    </form>#}
+
+    <form action="" method="post"
+          class="form" role="form">
+        {{ form.csrf_token }}
+        <input id="csrf_token" name="csrf_token" type="hidden" value="IjE2MGQwM2YwNmI5ODFhYzYwYjA5NWVmMmNhNmE5NDE5OWViMWU3ZmEi.XHSwyg.1hIxj3X2pSRmP009CO7sXm4TDbo">
+        <div class="form-group "><label class="control-label" for="category">课程类型</label>
+
+            <select class="form-control" id="category" name="category" >
+                <option value="1">语言技巧</option>
+                <option value="2">框架</option>
+                <option value="3">数据库</option>
+                <option value="4">新技术</option>
+            </select>
+
+        </div>
+
+
+        <div class="form-group "><label class="control-label" for="teach_or_listen">讲课或听课</label>
+
+            <select class="form-control" id="teach_or_listen" name="teach_or_listen">
+                <option value="1">我要讲课</option>
+                <option value="2">我要听课</option>
+            </select>
+
+        </div>
+
+
+        <div class="form-group "><label class="control-label" for="course_name">课程名字</label>
+
+            <input class="form-control" id="course_name" name="course_name" type="text" value={{ course.course_name }}>
+
+        </div>
+
+
+        <div class="form-group "><label class="control-label" for="remark">详细</label>
+
+            <textarea class="form-control" id="remark" name="remark" placeholder={{ course.remark|replace('\r\n', '|') }}></textarea>
+
+        </div>
+
+
+        <input class="btn btn-default" id="submit" name="submit" type="submit" value="保存">
+
+
+    </form>
+
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script type="text/javascript">
+        var js_object = {{result|safe }};
+        //获取课程类型
+        var category = document.getElementById('category').children;
+        for(var i=0;i<category.length;i++){
+            if(category[i].value==js_object.category){
+                    console.log(category[i]);
+                    category[i].setAttribute('selected','true')
+                }
+        }
+        //判断听课还是讲课
+        var teach_or_listen = document.getElementById('teach_or_listen').children;
+        for(var j=0;j<teach_or_listen.length;j++){
+            if(teach_or_listen[j].value==js_object.teach_or_listen){
+                    console.log(teach_or_listen[j]);
+                    teach_or_listen[j].setAttribute('selected','true')
+                }
+        }
+    </script>
+{% endblock %}
